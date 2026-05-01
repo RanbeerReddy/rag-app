@@ -4,6 +4,7 @@ from typing import TypedDict
 from ai_agent.rag import rag_pipeline
 from ai_agent.tools import search_tool
 from ai_agent.router import route_query
+from ai_agent.rag import generate_answer, retrieve_docs
 
 class AgentState(TypedDict):
     query: str
@@ -31,25 +32,21 @@ def serp_node(state: AgentState):
     return {"serp_response": final}
 
 def both_node(state: AgentState):
-    rag_resp = rag_pipeline(state["query"])
+    #  Gather RAW context from both sources
+    rag_docs = retrieve_docs(state["query"]) # Returns a list of strings
+    serp_raw = search_tool(state["query"])   # Returns a single string
 
-    serp_raw = search_tool(state["query"])
+    #  Combine the raw data into one context payload
+    # We append the SERP data as an additional "document"
+    combined_context = rag_docs + [f"External Search Results: {serp_raw}"]
 
-    from ai_agent.rag import generate_answer
-    serp_resp = generate_answer(state["query"], [serp_raw])
-
-    combined = f"""
-RAG Answer:
-{rag_resp}
-
-External Info:
-{serp_resp}
-"""
+    #  Make a SINGLE call to the LLM to synthesize the final answer
+    final_resp = generate_answer(state["query"], combined_context)
 
     return {
-        "rag_response": rag_resp,
-        "serp_response": serp_resp,
-        "final_answer": combined
+        "rag_response": "Combined in final_answer", # Optional placeholder
+        "serp_response": "Combined in final_answer", # Optional placeholder
+        "final_answer": final_resp
     }
 
 def final_node(state: AgentState):
