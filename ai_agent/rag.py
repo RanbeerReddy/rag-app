@@ -8,6 +8,8 @@ from langchain_community.embeddings import HuggingFaceEmbeddings
 
 from utils.logger import logger
 from utils.exception import NetworkSecurityException
+import warnings
+warnings.filterwarnings("ignore")
 
 
 # ---------------- LOAD DOCUMENTS ---------------- #
@@ -109,30 +111,21 @@ def call_ollama(prompt):
 # ---------------- ANSWER GENERATION ---------------- #
 def generate_answer(query, context):
     try:
-        prompt = f"""
-You are an AI assistant answering questions about Debales AI.
+        # Load prompt template from file
+        with open("prompts/rag_prompt.txt", "r", encoding="utf-8") as f:
+            template = f.read()
 
-STRICT RULES:
-- Answer ONLY from context
-- Ignore irrelevant or unrelated information
-- If context is mixed, extract only relevant parts
-- If unsure, say: "I don’t have enough information"
-
-Context:
-{chr(10).join(context)}
-
-Question:
-{query}
-
-Answer clearly and concisely:
-"""
+        # Fill in placeholders
+        prompt = template.format(
+            context="\n".join(context),
+            query=query
+        )
 
         return call_ollama(prompt)
 
     except Exception as e:
         logger.error("Error generating answer", exc_info=True)
         raise NetworkSecurityException(e, sys)
-
 
 # ---------------- FULL PIPELINE ---------------- #
 def rag_pipeline(query):
@@ -153,8 +146,9 @@ def rag_pipeline(query):
 
 # ---------------- MAIN ---------------- #
 if __name__ == "__main__":
-    texts = load_documents()
-    create_vectorstore(texts)
+    if not os.path.exists("vectorstore"):
+        texts = load_documents()
+        create_vectorstore(texts)
 
     while True:
         q = input("Ask: ")

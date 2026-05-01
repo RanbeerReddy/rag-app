@@ -171,49 +171,16 @@ def save_docs(docs, path="data/raw_docs.json"):
         raise NetworkSecurityException(e, sys)
 
 
+def load_urls(file_path="prompts/urls.txt"):
+    with open(file_path, "r", encoding="utf-8") as f:
+        urls = [line.strip() for line in f if line.strip()]
+    return urls
 
 if __name__ == "__main__":
-    
-    urls = [
-            "https://debales.ai/",
-            "https://debales.ai/book-demo",
-            "https://debales.ai/ai-agent",
-            "https://debales.ai/ai-agent/rerouting",
-            "https://debales.ai/ai-agent/multi-agent",
-            "https://debales.ai/ai-agent/load-planning",
-            "https://debales.ai/ai-agent/fleet",
-            "https://debales.ai/ai-agent/ai-crm",
-            "https://debales.ai/ai-agent/orchestrator",
-            "https://debales.ai/logistics",
-            "https://debales.ai/integrations",
-            "https://debales.ai/ecommerce",
-            "https://debales.ai/case-studies",
-            "https://debales.ai/case-studies/debales-ai-cuts-customer-support-requests-for-blossom-and-rhyme",
-            
-        ]
+    urls = load_urls()
 
     docs = scrape_urls(urls)
     docs = remove_duplicates(docs)
-
     save_docs(docs)
 
     print(f"✅ Final documents count: {len(docs)}")
-
-
-urls = [
-        "https://debales.ai/",
-        "https://debales.ai/book-demo",
-        "https://debales.ai/ai-agent",
-        "https://debales.ai/ai-agent/rerouting",
-        "https://debales.ai/ai-agent/multi-agent",
-        "https://debales.ai/ai-agent/load-planning",
-        "https://debales.ai/ai-agent/fleet",
-        "https://debales.ai/ai-agent/ai-crm",
-        "https://debales.ai/ai-agent/orchestrator",
-        "https://debales.ai/logistics",
-        "https://debales.ai/integrations",
-        "https://debales.ai/ecommerce",
-        "https://debales.ai/case-studies",
-        "https://debales.ai/case-studies/debales-ai-cuts-customer-support-requests-for-blossom-and-rhyme",
-        
-    ]
