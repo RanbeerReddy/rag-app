@@ -1,12 +1,18 @@
-langchain==0.2.14
-langchain-core==0.2.32
-langchain-community==0.2.12
-langgraph==0.2.14
+google-search-results
 
-openai==1.40.6
 tiktoken==0.7.0
 
 faiss-cpu==1.13.2
+
+
+langchain==0.2.14
+langchain-core==0.2.32
+langsmith==0.1.147
+langchain-community==0.2.12
+langgraph==0.2.14
+
+faiss-cpu==1.13.2
+sentence-transformers==2.7.0
 
 requests==2.32.3
 beautifulsoup4==4.12.3

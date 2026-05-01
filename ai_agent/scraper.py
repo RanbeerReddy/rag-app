@@ -14,7 +14,7 @@ HEADERS = {
 }
 
 
-# ---------------- FETCH ---------------- #
+
 def fetch_page(url: str) -> str:
     try:
         logger.info(f"Fetching: {url}")
@@ -27,14 +27,13 @@ def fetch_page(url: str) -> str:
         raise NetworkSecurityException(e, sys)
 
 
-# ---------------- CLEAN HTML ---------------- #
+
 def clean_html(soup: BeautifulSoup):
     for tag in soup(["script", "style", "nav", "footer", "header", "aside"]):
         tag.decompose()
     return soup
 
 
-# ---------------- EXTRACT TEXT ---------------- #
 def extract_text(html: str) -> str:
     try:
         soup = BeautifulSoup(html, "html.parser")
@@ -57,7 +56,7 @@ def extract_text(html: str) -> str:
         raise NetworkSecurityException(e, sys)
 
 
-# ---------------- REMOVE NOISE ---------------- #
+
 def remove_noise(text: str) -> str:
     noise_phrases = [
         "Still have a question",
@@ -72,7 +71,7 @@ def remove_noise(text: str) -> str:
     return text
 
 
-# ---------------- CLEAN REPETITION ---------------- #
+
 def clean_repetition(text: str) -> str:
     sentences = text.split(". ")
     seen = set()
@@ -86,7 +85,6 @@ def clean_repetition(text: str) -> str:
     return ". ".join(cleaned)
 
 
-# ---------------- CHUNKING (FIXED) ---------------- #
 def split_chunks(text: str, chunk_size=500):
     sentences = text.split(". ")
 
@@ -106,12 +104,12 @@ def split_chunks(text: str, chunk_size=500):
     return chunks
 
 
-# ---------------- FILTER BAD CHUNKS ---------------- #
+
 def is_good_chunk(chunk):
     return len(chunk.split()) > 20
 
 
-# ---------------- SCRAPER ---------------- #
+
 def scrape_urls(urls: list) -> list:
     documents = []
 
@@ -143,7 +141,7 @@ def scrape_urls(urls: list) -> list:
     return documents
 
 
-# ---------------- REMOVE DUPLICATES ---------------- #
+
 def remove_duplicates(docs):
     seen = set()
     unique_docs = []
@@ -158,7 +156,7 @@ def remove_duplicates(docs):
     return unique_docs
 
 
-# ---------------- SAVE ---------------- #
+
 def save_docs(docs, path="data/raw_docs.json"):
     try:
         os.makedirs("data", exist_ok=True)
@@ -173,7 +171,7 @@ def save_docs(docs, path="data/raw_docs.json"):
         raise NetworkSecurityException(e, sys)
 
 
-# ---------------- MAIN ---------------- #
+
 if __name__ == "__main__":
     
     urls = [
