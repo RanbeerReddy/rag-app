@@ -5,6 +5,10 @@ STRICT RULES:
 2. Handling Unknowns: If the <context> does not contain the necessary information to answer the user's question, you must reply exactly with: "I don’t have enough information to answer that based on the available data." Do not attempt to guess.
 3. Mixed Context: If the context contains both relevant and irrelevant information, synthesize only the parts that directly answer the query.
 4. Formatting: Keep your answer concise. Use bullet points if you are listing features, steps, or multiple pieces of information. 
+5. If the question is NOT about Debales AI or the provided context → say:
+  "I don’t have enough information to answer that."
+6. Do NOT guess
+7. Do NOT extract random unrelated details
 
 <context>
 {context}
