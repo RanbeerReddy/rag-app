@@ -1,62 +1,109 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Debales AI Assistant</title>
     <style>
         body {
-            font-family: Arial;
-            margin: 40px;
-            background-color: #f4f4f4;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            background: #0f172a;
+            color: white;
         }
 
-        .container {
-            max-width: 700px;
-            margin: auto;
-            background: white;
+        .app {
+            max-width: 800px;
+            margin: 40px auto;
+            background: #1e293b;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            height: 80vh;
+            box-shadow: 0 0 20px rgba(0,0,0,0.4);
+        }
+
+        .header {
+            padding: 15px;
+            border-bottom: 1px solid #334155;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .chat {
+            flex: 1;
             padding: 20px;
+            overflow-y: auto;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            max-width: 70%;
+            padding: 10px 15px;
             border-radius: 10px;
+            line-height: 1.4;
+        }
+
+        .user {
+            background: #3b82f6;
+            margin-left: auto;
+        }
+
+        .bot {
+            background: #334155;
+        }
+
+        .input-area {
+            display: flex;
+            border-top: 1px solid #334155;
         }
 
         input[type="text"] {
-            width: 100%;
-            padding: 10px;
+            flex: 1;
+            padding: 12px;
+            border: none;
+            outline: none;
             font-size: 16px;
+            background: #0f172a;
+            color: white;
         }
 
         button {
-            margin-top: 10px;
-            padding: 10px 15px;
-            font-size: 16px;
+            padding: 12px 20px;
+            background: #3b82f6;
+            border: none;
+            color: white;
+            cursor: pointer;
         }
 
-        .answer {
-            margin-top: 20px;
-            padding: 10px;
-            background: #e8f0fe;
-            border-radius: 5px;
+        button:hover {
+            background: #2563eb;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>Debales AI Assistant</h2>
+<div class="app">
+    <div class="header">Debales AI Assistant</div>
 
-    <form method="POST">
+    <div class="chat">
+        {% if query %}
+            <div class="message user">
+                {{ query }}
+            </div>
+        {% endif %}
+
+        {% if answer %}
+            <div class="message bot">
+                {{ answer }}
+            </div>
+        {% endif %}
+    </div>
+
+    <form method="POST" class="input-area">
         <input type="text" name="query" placeholder="Ask something..." required>
-        <button type="submit">Submit</button>
+        <button type="submit">Send</button>
     </form>
-
-    {% if query %}
-        <p><strong>Question:</strong> {{ query }}</p>
-    {% endif %}
-
-    {% if answer %}
-        <div class="answer">
-            <strong>Answer:</strong>
-            <p>{{ answer }}</p>
-        </div>
-    {% endif %}
 </div>
 
 </body>
